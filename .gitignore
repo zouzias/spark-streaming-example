@@ -1,3 +1,7 @@
+receivedBlockMetadata/
+.idea/
+checkpoint-*
+.checkpoint-*
 *.class
 *.log
 
