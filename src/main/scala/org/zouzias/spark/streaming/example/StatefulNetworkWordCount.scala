@@ -17,7 +17,8 @@
 
 package org.zouzias.spark.streaming.example
 
-import org.apache.spark.{Logging, SparkConf}
+import org.apache.log4j.Logger
+import org.apache.spark.SparkConf
 import org.apache.spark.streaming._
 
 /**
@@ -33,19 +34,20 @@ import org.apache.spark.streaming._
  *    `$ bin/run-example
  *      org.apache.spark.examples.streaming.StatefulNetworkWordCount localhost 9999`
  */
-object StatefulNetworkWordCount extends Logging {
+object StatefulNetworkWordCount {
+
+  @transient lazy val log = Logger.getLogger(getClass.getName)
+
   def main(args: Array[String]) {
     if (args.length < 2) {
       System.err.println("Usage: StatefulNetworkWordCount <hostname> <port>")
       System.exit(1)
     }
 
-    StreamingExamples.setStreamingLogLevels()
-
     val sparkConf = new SparkConf().setAppName("StatefulNetworkWordCount")
     // Create the context with a 1 second batch size
     val ssc = new StreamingContext(sparkConf, Seconds(1))
-    ssc.checkpoint(".")
+    ssc.checkpoint("./checkpoint-streaming-dir")
 
     // Initial state RDD for mapWithState operation
     val initialRDD = ssc.sparkContext.parallelize(List(("hello", 1), ("world", 1)))
@@ -71,9 +73,9 @@ object StatefulNetworkWordCount extends Logging {
 
     // react to SIGTERM, see: https://metabroadcast.com/blog/stop-your-spark-streaming-application-gracefully
     sys.ShutdownHookThread {
-      logInfo("Gracefully stopping Spark Streaming Application")
+      log.info("Gracefully stopping Spark Streaming Application")
       ssc.stop(true, true)
-      logInfo("Application stopped")
+      log.info("Application stopped")
     }
 
     ssc.start()

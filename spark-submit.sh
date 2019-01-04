@@ -5,10 +5,10 @@ CURRENT_DIR=`pwd`
 # Assumes that spark is installed under home directory
 HOME_DIR=`echo ~`
 #export SPARK_LOCAL_IP=localhost
-SPARK_HOME=${HOME_DIR}/spark-1.6.2-bin-hadoop2.6
+SPARK_HOME=${HOME_DIR}/spark-2.4.0-bin-hadoop2.7
 
 # spark-lucenerdd assembly JAR
-MAIN_JAR=${CURRENT_DIR}/target/scala-2.10/spark-streaming-example-assembly-0.0.1.jar
+MAIN_JAR=${CURRENT_DIR}/target/scala-2.11/spark-streaming-example-assembly-0.0.1.jar
 
 echo "Loading JAR: ${MAIN_JAR}"
 
